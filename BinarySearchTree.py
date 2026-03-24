@@ -93,6 +93,26 @@ class Node:
         elements.append(self.data)
         return elements
 
+    def delete(self, value):
+        if value < self.data:
+            if self.left:
+                self.left = self.left.delete(value)
+        elif value > self.data:
+            if self.right:
+                self.right = self.right.delete(value)
+        else:
+            if self.left is None and self.right is None:
+                return None
+            if self.left is None:
+                return self.right
+            if self.right is None:
+                return self.left
+
+            max_value = self.left.find_max()
+            self.data = max_value
+            self.left = self.left.delete(max_value)
+        return self
+
 
 def build_tree(elements):
     root = Node(elements[0])
@@ -104,11 +124,8 @@ def build_tree(elements):
 
 if __name__ == '__main__':
     elements = [2,3,1,43,12,43]
+
     root = build_tree(elements)
+    root.delete(43)
     print(root.inorder())
-    print(root.search(4))
-    print(root.find_min())
-    print(root.find_max())
-    print(root.calculate_sum())
-    print(root.preorder())
-    print(root.postorder())
+
